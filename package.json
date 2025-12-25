@@ -1,0 +1,22 @@
+{
+  "name": "105maps",
+  "version": "1.0.0",
+  "description": "A simple digital maps application similar to Google Maps",
+  "main": "src/js/map.js",
+  "scripts": {
+    "start": "python src/server.py",
+    "dev": "python src/server.py",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "maps",
+    "javascript",
+    "python",
+    "frontend",
+    "backend"
+  ],
+  "author": "105maps Team",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}
