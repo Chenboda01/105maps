@@ -1,22 +1,30 @@
 {
   "name": "105maps",
   "version": "1.0.0",
-  "description": "A simple digital maps application similar to Google Maps",
+  "description": "A simple digital maps application similar to Google Maps with focus on simplicity and ease of use",
   "main": "src/js/map.js",
   "scripts": {
-    "start": "python src/server.py",
-    "dev": "python src/server.py",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cd src && python server.py",
+    "dev": "cd src && python server.py",
+    "install": "cd src && pip install -r requirements.txt"
   },
   "keywords": [
     "maps",
     "javascript",
     "python",
     "frontend",
-    "backend"
+    "backend",
+    "geolocation",
+    "mapping"
   ],
   "author": "105maps Team",
   "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {}
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Chenboda01/105maps.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Chenboda01/105maps/issues"
+  },
+  "homepage": "https://github.com/Chenboda01/105maps#readme"
 }
