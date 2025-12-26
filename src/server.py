@@ -22,28 +22,48 @@ sample_locations = {
     "rio": {"lat": -22.9068, "lng": -43.1729, "name": "Rio de Janeiro, Brazil"},
     "cape town": {"lat": -33.9249, "lng": 18.4241, "name": "Cape Town, South Africa"},
     "seoul": {"lat": 37.5665, "lng": 126.9780, "name": "Seoul, South Korea"},
-    "toronto": {"lat": 43.6532, "lng": -79.3832, "name": "Toronto, Canada"}
+    "toronto": {"lat": 43.6532, "lng": -79.3832, "name": "Toronto, Canada"},
+    "los angeles": {"lat": 34.0522, "lng": -118.2437, "name": "Los Angeles, USA"},
+    "chicago": {"lat": 41.8781, "lng": -87.6298, "name": "Chicago, USA"},
+    "mexico city": {"lat": 19.4326, "lng": -99.1332, "name": "Mexico City, Mexico"},
+    "mumbai": {"lat": 19.0760, "lng": 72.8777, "name": "Mumbai, India"},
+    "shanghai": {"lat": 31.2304, "lng": 121.4737, "name": "Shanghai, China"},
+    "dubai": {"lat": 25.2048, "lng": 55.2708, "name": "Dubai, UAE"},
+    "singapore": {"lat": 1.3521, "lng": 103.8198, "name": "Singapore"},
+    "hong kong": {"lat": 22.3193, "lng": 114.1694, "name": "Hong Kong"},
+    "berlin": {"lat": 52.5200, "lng": 13.4050, "name": "Berlin, Germany"},
+    "rome": {"lat": 41.9028, "lng": 12.4964, "name": "Rome, Italy"},
+    "amsterdam": {"lat": 52.3676, "lng": 4.9041, "name": "Amsterdam, Netherlands"},
+    "vienna": {"lat": 48.2082, "lng": 16.3738, "name": "Vienna, Austria"}
 }
 
 @app.route('/')
 def index():
     """Serve the main page"""
-    return send_from_directory('.', 'index.html')
+    response = send_from_directory('.', 'index.html')
+    response.headers['Cache-Control'] = 'public, max-age=3600'  # Cache for 1 hour
+    return response
 
 @app.route('/css/<path:path>')
 def send_css(path):
     """Serve CSS files"""
-    return send_from_directory('css', path)
+    response = send_from_directory('css', path)
+    response.headers['Cache-Control'] = 'public, max-age=86400'  # Cache for 1 day
+    return response
 
 @app.route('/js/<path:path>')
 def send_js(path):
     """Serve JavaScript files"""
-    return send_from_directory('js', path)
+    response = send_from_directory('js', path)
+    response.headers['Cache-Control'] = 'public, max-age=86400'  # Cache for 1 day
+    return response
 
 @app.route('/assets/<path:path>')
 def send_assets(path):
     """Serve asset files"""
-    return send_from_directory('assets', path)
+    response = send_from_directory('assets', path)
+    response.headers['Cache-Control'] = 'public, max-age=86400'  # Cache for 1 day
+    return response
 
 @app.route('/api/search', methods=['GET'])
 def search_location():
@@ -52,18 +72,33 @@ def search_location():
     Example: /api/search?q=Paris
     """
     query = request.args.get('q', '').lower().strip()
-    
+
     if not query:
         return jsonify({"error": "Query parameter 'q' is required"}), 400
-    
-    # Simple case-insensitive search in our sample data
+
+    # Exact match first
     for location_name, coords in sample_locations.items():
-        if query in location_name:
+        if query == location_name:
             return jsonify({
                 "name": coords["name"],
                 "lat": coords["lat"],
                 "lng": coords["lng"]
             })
+
+    # Partial match with fuzzy search
+    matches = []
+    for location_name, coords in sample_locations.items():
+        if query in location_name or location_name in query:
+            matches.append({
+                "name": coords["name"],
+                "lat": coords["lat"],
+                "lng": coords["lng"],
+                "match_type": "partial"
+            })
+
+    # If we have matches, return the best ones
+    if matches:
+        return jsonify({"results": matches, "total": len(matches)})
 
     # If not found in sample data, return a mock response
     # In a real implementation, you would call a geocoding service
@@ -71,8 +106,23 @@ def search_location():
         "name": query,
         "lat": 0,
         "lng": 0,
-        "message": "Location not found in sample data. In a real implementation, this would call a geocoding service."
+        "message": "Location not found in sample data. In a real implementation, this would call a geocoding service.",
+        "suggestions": get_suggestions(query)
     })
+
+def get_suggestions(query):
+    """
+    Provide location suggestions based on partial matches
+    """
+    suggestions = []
+    for location_name, coords in sample_locations.items():
+        if query in location_name:
+            suggestions.append({
+                "name": coords["name"],
+                "lat": coords["lat"],
+                "lng": coords["lng"]
+            })
+    return suggestions[:5]  # Return top 5 suggestions
 
 @app.route('/api/geocode', methods=['POST'])
 def geocode_location():
@@ -205,6 +255,44 @@ def popular_locations():
         "count": len(locations_list)
     })
 
+@app.route('/api/feedback', methods=['POST'])
+def submit_feedback():
+    """
+    Submit feedback from users
+    """
+    data = request.get_json()
+
+    # Validate required fields
+    if not data or 'type' not in data or 'message' not in data:
+        return jsonify({"error": "Missing required fields: type and message"}), 400
+
+    feedback_type = data.get('type')
+    message = data.get('message')
+    email = data.get('email')
+    device_info = data.get('device_info', '')
+
+    # Validate feedback type
+    valid_types = ['bug', 'feature', 'general', 'support']
+    if feedback_type not in valid_types:
+        return jsonify({"error": f"Invalid feedback type. Must be one of: {', '.join(valid_types)}"}), 400
+
+    # In a real application, you would save this feedback to a database
+    # For now, we'll just log it
+    print(f"New feedback received:")
+    print(f"  Type: {feedback_type}")
+    print(f"  Email: {email}")
+    print(f"  Message: {message}")
+    print(f"  Device Info: {device_info}")
+    print("-" * 50)
+
+    # In a real application, you might also send an email notification
+    # or save to a database here
+
+    return jsonify({
+        "message": "Feedback received successfully",
+        "feedback_id": "temp_id_" + str(hash(message))  # In a real app, use a proper ID
+    })
+
 if __name__ == '__main__':
     # Check if Flask is installed
     try:
@@ -221,4 +309,5 @@ if __name__ == '__main__':
     print("  - GET /api/reverse-geocode?lat=XX&lng=YY")
     print("  - GET /api/directions?from=start&to=end")
     print("  - GET /api/popular-locations")
+    print("  - POST /api/feedback {\"type\": \"bug|feature|general|support\", \"message\": \"...\", \"email\": \"...\"}")
     app.run(debug=True, host='0.0.0.0', port=5000)

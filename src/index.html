@@ -2,9 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>105maps - Simple Digital Maps</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Mobile-specific styling */
+        @media (max-width: 768px) {
+            #controls {
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                flex-wrap: wrap;
+            }
+
+            #search-input {
+                width: calc(100% - 80px);
+                margin-bottom: 10px;
+            }
+
+            #zoom-controls {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                margin-left: 0;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="map-container">
@@ -16,9 +39,95 @@
                 <button id="zoom-in">+</button>
                 <button id="zoom-out">-</button>
             </div>
+            <button id="help-btn">Help</button>
+            <button id="feedback-btn">Feedback</button>
         </div>
     </div>
-    
+    <div id="tutorial-overlay" class="tutorial-overlay hidden">
+        <div class="tutorial-modal">
+            <h2>Welcome to 105maps!</h2>
+            <div class="tutorial-content">
+                <div class="tutorial-step active" data-step="1">
+                    <h3>Search for Locations</h3>
+                    <p>Use the search bar at the top to find locations around the world. Type a city name and click Search or press Enter.</p>
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='100' viewBox='0 0 200 100'%3E%3Crect x='10' y='30' width='180' height='30' rx='5' fill='%23e0e0e0' stroke='%23999'/%3E%3Crect x='15' y='35' width='100' height='20' fill='white'/%3E%3Crect x='120' y='35' width='60' height='20' fill='%234285f4'/%3E%3C/svg%3E" alt="Search bar example">
+                </div>
+                <div class="tutorial-step hidden" data-step="2">
+                    <h3>Navigate the Map</h3>
+                    <p>Click and drag to move around the map. Use the + and - buttons to zoom in and out.</p>
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='100' viewBox='0 0 200 100'%3E%3Crect x='20' y='20' width='160' height='60' fill='%23f0f0f0' stroke='%23999'/%3E%3Ccircle cx='160' cy='40' r='15' fill='white' stroke='%23999'/%3E%3Ctext x='160' y='45' font-size='20' text-anchor='middle' fill='%23333'%3E%2B%3C/text%3E%3Ccircle cx='160' cy='70' r='15' fill='white' stroke='%23999'/%3E%3Ctext x='160' y='75' font-size='20' text-anchor='middle' fill='%23333'%3E-%3C/text%3E%3C/svg%3E" alt="Zoom controls example">
+                </div>
+                <div class="tutorial-step hidden" data-step="3">
+                    <h3>Need More Help?</h3>
+                    <p>Visit our help section or send feedback using the feedback button.</p>
+                </div>
+            </div>
+            <div class="tutorial-navigation">
+                <button id="prev-tutorial" class="tutorial-nav-btn">Previous</button>
+                <span id="tutorial-progress">Step 1 of 3</span>
+                <button id="next-tutorial" class="tutorial-nav-btn">Next</button>
+                <button id="close-tutorial" class="tutorial-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="feedback-overlay" class="feedback-overlay hidden">
+        <div class="feedback-modal">
+            <h2>Feedback & Support</h2>
+            <form id="feedback-form">
+                <div class="form-group">
+                    <label for="feedback-type">Feedback Type:</label>
+                    <select id="feedback-type" required>
+                        <option value="">Select a type</option>
+                        <option value="bug">Report a Bug</option>
+                        <option value="feature">Suggest a Feature</option>
+                        <option value="general">General Feedback</option>
+                        <option value="support">Support Request</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="feedback-email">Email (optional):</label>
+                    <input type="email" id="feedback-email" placeholder="your.email@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="feedback-message">Your Message:</label>
+                    <textarea id="feedback-message" rows="5" placeholder="Please describe your feedback in detail..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="feedback-device">Device Information:</label>
+                    <textarea id="feedback-device" rows="2" readonly></textarea>
+                    <small>This helps us understand your environment</small>
+                </div>
+
+                <div class="feedback-navigation">
+                    <button type="button" id="cancel-feedback" class="feedback-cancel-btn">Cancel</button>
+                    <button type="submit" id="submit-feedback" class="feedback-submit-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="js/map.js"></script>
+    <script type="module" src="https://unpkg.com/@capacitor/app@latest/dist/esm/index.js"></script>
+    <script>
+        // Initialize Capacitor App
+        if ('capacitor' in window) {
+            // Capacitor is available, we're running as a native app
+            const { App } = window.capacitor;
+
+            App.addListener('appStateChange', (state) => {
+                if (state.isActive) {
+                    // App has come to foreground
+                    console.log('App is in foreground');
+                } else {
+                    // App has gone to background
+                    console.log('App is in background');
+                }
+            });
+        }
+    </script>
 </body>
 </html>

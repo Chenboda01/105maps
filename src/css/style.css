@@ -113,3 +113,271 @@ body {
     border-radius: 4px;
     display: none;
 }
+
+/* Search results and suggestions modals */
+.search-results-modal, .suggestions-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    max-width: 80%;
+}
+
+.search-results-modal ul, .suggestions-modal ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.search-results-modal li, .suggestions-modal li {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.search-results-modal li:hover, .suggestions-modal li:hover {
+    background-color: #f0f0f0;
+}
+
+.search-results-modal h3, .suggestions-modal h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.search-results-modal button, .suggestions-modal button {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.search-results-modal button:hover, .suggestions-modal button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Tutorial modal styles */
+.tutorial-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.tutorial-overlay.hidden {
+    display: none;
+}
+
+.tutorial-modal {
+    background-color: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.tutorial-modal h2 {
+    margin-top: 0;
+    color: #4285f4;
+    text-align: center;
+}
+
+.tutorial-content {
+    margin: 20px 0;
+}
+
+.tutorial-step {
+    padding: 10px 0;
+}
+
+.tutorial-step.hidden {
+    display: none;
+}
+
+.tutorial-step h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.tutorial-step img {
+    display: block;
+    margin: 10px auto;
+    max-width: 100%;
+    height: auto;
+}
+
+.tutorial-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.tutorial-nav-btn, .tutorial-close-btn {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.tutorial-nav-btn:hover, .tutorial-close-btn:hover {
+    background-color: #e8e8e8;
+}
+
+.tutorial-nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#tutorial-progress {
+    font-weight: bold;
+    color: #555;
+}
+
+#help-btn {
+    padding: 10px 15px;
+    background-color: #34a853;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+#help-btn:hover {
+    background-color: #2d8e47;
+}
+
+/* Feedback modal styles */
+.feedback-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.feedback-overlay.hidden {
+    display: none;
+}
+
+.feedback-modal {
+    background-color: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.feedback-modal h2 {
+    margin-top: 0;
+    color: #4285f4;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.85em;
+}
+
+.feedback-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.feedback-cancel-btn, .feedback-submit-btn {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.feedback-cancel-btn {
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+.feedback-cancel-btn:hover {
+    background-color: #e8e8e8;
+}
+
+.feedback-submit-btn {
+    background-color: #4285f4;
+    color: white;
+}
+
+.feedback-submit-btn:hover {
+    background-color: #3367d6;
+}
+
+#feedback-btn {
+    padding: 10px 15px;
+    background-color: #fbbc04;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+#feedback-btn:hover {
+    background-color: #e0a800;
+}

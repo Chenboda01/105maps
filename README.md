@@ -21,33 +21,25 @@ The project uses:
 
 This is the official repository for the 105maps project.
 
-## Installation
+## Installation on your phone
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Chenboda01/105maps.git
-   ```
+Android:
 
-2. Navigate to the src directory:
-   ```bash
-   cd 105maps/src
-   ```
+1. Open the play store app. 
+2. Search for "105maps".
+3. Install the app developed by "Chenboda01".
 
-3. Install Python dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+Apple:
 
-## Usage
+1. Open the app store app.
+2. Search for "105maps".
+3. Install the app developed by "Chenboda01".
 
-To start the development server:
+## Installation your computer
 
-```bash
-cd 105maps/src
-python server.py
-```
+1. Go to 'Github.com/chenboda01/105maps'.
+2. Then visit `https://chenboda01.github.io/105maps/` in your browser to run the application.
 
-Then visit `http://localhost:5000` in your browser to run the application.
 
 ## API Endpoints
 
